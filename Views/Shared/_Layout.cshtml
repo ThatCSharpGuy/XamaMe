@@ -2,9 +2,30 @@
 <html>
 <head>
     <title>@ViewBag.Title</title>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link href="~/Content/css/skeleton.css" rel="stylesheet" />
+    <link href="~/Content/css/normalize.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js" integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8=" crossorigin="anonymous"></script>
 </head>
 <body>
-	@RenderBody()
+    <header>
+
+        <div class="container">
+            <div class="row">
+                <div class="column">
+                    <h1>Xamarinizate!</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+<footer></footer>
+
 </body>
 </html>
-
