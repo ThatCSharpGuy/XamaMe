@@ -51,40 +51,37 @@ namespace XamaMe.Controllers
             if (Request.Files.Count == 0) return View();
             var file = Request.Files[0];
 
-            var faceService = new FaceServiceClient("510b57a61366462da7c7f6ea7da85359");
             byte[] fileBytes = GetImageBytes(file);
 
-            var face = (await faceService.DetectAsync(file.InputStream)).FirstOrDefault();
+            Rectangle r; // = new Rectangle(43, 95, 155, 155);
 
+            var faceService = new FaceServiceClient("510b57a61366462da7c7f6ea7da85359");
+            var face = (await faceService.DetectAsync(file.InputStream)).FirstOrDefault();
             if (face == null) return View();
+            r = face.GetCroppingRectangle();
+            var faceCenter = r.GetCenter();
+
             using (var imageFactory = new ImageFactory(false))
             {
                 var responseStream = new MemoryStream();
 
-                var r = face.GetCroppingRectangle();
-
                 var img = imageFactory.Load(fileBytes);
 
-                if (img.Image.Width < r.Width || img.Image.Height < r.Height)
-                {
-                    var faceCenter = face.GetFaceCenter();
-                    var resizeLayer = new ResizeLayer(new Size(Xamagon.Width, Xamagon.Height),
-                        resizeMode:ResizeMode.BoxPad,
-                        centerCoordinates: faceCenter);
-                    img.Resize(resizeLayer);
-                    img.BackgroundColor(Color.FromArgb(52, 152, 219));
-                }
-
-                img.Crop(r)
+                img
+                    .Crop(r)
                     .Mask(Xamagon)
                     .Format(new PngFormat())
                     .Save(responseStream);
+
 
 
                 var responseBytes = new byte[responseStream.Length];
                 responseStream.Read(responseBytes, 0, responseBytes.Length);
 
                 ViewBag.ImageBytes = responseBytes;
+
+                ViewBag.SeemsGood = img.Image.Width >= Xamagon.Width
+                    && img.Image.Height >= Xamagon.Height;
             }
             return View("XamaMe", faceCount);
 

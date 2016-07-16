@@ -1,37 +1,30 @@
-﻿<form method="post" enctype="multipart/form-data">
-    <div class="row">
-        <input type="file" class="u-full-width" id="photo" name="photo"/>
-        <div class="u-full-width">
-            <img id="image-container"/>
+﻿<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" class="u-full-width" id="photo" name="photo" />
+        <div id="image-container">
+            <img id="image" />
         </div>
-    </div>
-    <button type="submit" class="button-primary">
-        Submit
-    </button>
-
-</form>
-
+        <button type="submit" class="button-primary">Enviar</button>
+    </form>
+</div>
 
 <script>
     $('#photo').change(function (evt) {
-            var tgt = evt.target || window.event.srcElement,
-            files = tgt.files;
-            // FileReader support
-            if (FileReader && files && files.length) {
-                var fr = new FileReader();
-                fr.onload = function () {
-                    var image = new Image();
-                    image.src = fr.result;
-                    image.onload = function () {
-                        $("#image-container").attr("src", image.src);
-                    };
-                }
-                fr.readAsDataURL(files[0]);
+        var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var image = new Image();
+                image.src = fr.result;
+                image.onload = function () {
+                    $("#image").attr("src", image.src);
+                };
             }
-                // Not supported
-            else {
-                // fallback -- perhaps submit the input to an iframe and temporarily store
-                // them on the server until the user's session ends.
-            }
-        });
+            fr.readAsDataURL(files[0]);
+        }
+        else {
+        }
+    });
 </script>

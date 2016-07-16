@@ -3,7 +3,14 @@
 @{
     var base64 = Convert.ToBase64String((ViewBag.ImageBytes as byte[]));
     var imgSrc = String.Format("data:image/png;base64,{0}", base64);
-}
 
-<h1>XamaMe @Model</h1>
-<img src="@imgSrc"/>
+    var seemsGood = (bool)ViewBag.SeemsGood;
+
+    var croppingRectangle = ViewBag.CroppingRectangle as string;
+    var originalRectangle = ViewBag.OriginalRectangle as string;
+}
+@if (!seemsGood)
+{
+    <h3>Puede que tu avatar no se vea bien :(</h3>
+}
+<img src="@imgSrc" />
